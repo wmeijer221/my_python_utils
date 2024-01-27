@@ -1,5 +1,5 @@
 [bumpver]
-current_version = "0.1.0"
+current_version = "0.2.0"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 tag_message = "{new_version}"
@@ -13,6 +13,6 @@ push = true
 [bumpver.file_patterns]
 # "setup.py" = ["{version}", "{pep440_version}"]
 # "README.md" = ["{version}", "{pep440_version}"]
-"bumpver.toml" = ['^current_version = "{version}"']
-"pyproject.toml" = ['^version = "{version}"']
-"wmeijer_utils/__init__.py" = ['^version = "{version}"']
+"bumpver.toml" = ['current_version = "{version}"']
+"pyproject.toml" = ['version = "{version}"']
+"wmeijer_utils/__init__.py" = ['version = "{version}"']
