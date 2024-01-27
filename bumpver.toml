@@ -11,8 +11,8 @@ tag = true
 push = true
 
 [bumpver.file_patterns]
-"setup.py" = ["{version}", "{pep440_version}"]
-"README.md" = ["{version}", "{pep440_version}"]
+# "setup.py" = ["{version}", "{pep440_version}"]
+# "README.md" = ["{version}", "{pep440_version}"]
 "bumpver.toml" = ['^current_version = "{version}"']
 "pyproject.toml" = ['^version = "{version}"']
-"wmeijer_utils/__init__.py" = ['version = "{version}"']
+"wmeijer_utils/__init__.py" = ['^version = "{version}"']
