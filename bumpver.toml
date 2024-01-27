@@ -14,5 +14,5 @@ push = true
 "setup.py" = ["{version}", "{pep440_version}"]
 "README.md" = ["{version}", "{pep440_version}"]
 "bumpver.toml" = ['current_version = "{version}"']
-"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"pyproject.toml" = ['^version = "{version}"']
 "wmeijer_utils/__init__.py" = ["{version}"]
