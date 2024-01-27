@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+version = "0.4.0"
+
 setup(
     name="wmeijer_utils",
-    version="0.1.0",
+    version=version,
     author="Willem Meijer",
     author_email="me@wmeijer.com",
     description="Contains a diverse set of utility methods I use in Python.",
