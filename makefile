@@ -25,4 +25,5 @@ bump_minor:
 bump_patch:
 	bumpver update --patch
 	
-
+tests:
+	python -m unittest discover -s test -p "test_*"
