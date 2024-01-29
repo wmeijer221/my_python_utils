@@ -26,4 +26,4 @@ bump_patch:
 	bumpver update --patch
 	
 tests:
-	python -m unittest discover -s test -p "test_*"
+	python -m unittest discover -v -s test -p "test_*"

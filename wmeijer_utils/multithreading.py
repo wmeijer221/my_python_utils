@@ -109,7 +109,9 @@ class ExecutorService:
             self._worklist.put(SimpleConsumer.TerminateTask())
         # Waits until workers terminate.
         for worker in self._workers:
+            print(worker)
             worker.join()
+            print(worker)
 
     def get_results(self) -> Iterator[R] | None:
         if not self._return_results:

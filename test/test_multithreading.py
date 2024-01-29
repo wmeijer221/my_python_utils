@@ -1,23 +1,25 @@
 from dataclasses import dataclass
 import unittest
+import multiprocessing
 
 from wmeijer_utils.multithreading import parallelize_tasks_2
 
 
 THREAD_COUNT = 8
-WORK_LOAD = 1000
+WORK_LOAD = 10000
 
 
 @dataclass
 class MyObject:
     task: int
-    task_id: int 
-    worker_id: int 
+    task_id: int
+    worker_id: int
     total_tasks: int | str
 
 
 def return_task(task, task_id, worker_id, total_tasks):
     return task
+
 
 def return_dict(task, task_id, worker_id, total_tasks):
     return {
@@ -28,11 +30,26 @@ def return_dict(task, task_id, worker_id, total_tasks):
         "constant": "my_constant",
     }
 
+
 def return_object(task, task_id, worker_id, total_tasks):
     return MyObject(task, task_id, worker_id, total_tasks)
 
 
 class TestMultithreading(unittest.TestCase):
+    def _1test_paralellize_tasks_termination(self):
+        tasks = range(WORK_LOAD)
+
+        def bar():
+            results = parallelize_tasks_2(
+                tasks, return_object, thread_count=THREAD_COUNT, return_results=True
+            )
+
+        p = multiprocessing.Process(target=bar)
+        p.start()
+        p.join(timeout=2)
+        self.assertFalse(p.is_alive(), "Process did not terminate.")
+        p.kill()
+
     def test_paralellize_tasks_no_results(self):
         tasks = range(WORK_LOAD)
 
@@ -42,7 +59,7 @@ class TestMultithreading(unittest.TestCase):
 
         results = list(results)
 
-        assert len(results) == 0, "Did not expect to receive results."
+        self.assertEqual(len(results), 0, "Received results when I shouldn't have.")
 
     def test_paralellize_tasks_with_primitive_results(self):
         tasks = range(WORK_LOAD)
@@ -53,11 +70,12 @@ class TestMultithreading(unittest.TestCase):
 
         results = list(results)
 
-        assert len(results) == WORK_LOAD, f"Expected {WORK_LOAD} results, received {len(results)}."
+        self.assertEqual(len(results), WORK_LOAD)
 
         tasks = set(tasks)
         results = set(results)
-        assert len(tasks.intersection(results)) == WORK_LOAD, "Incorrect results"
+        intersect = tasks.intersection(results)
+        self.assertEqual(len(intersect, WORK_LOAD), "Received incorrect results.")
 
     def test_paralellize_countable_tasks_with_dict_results(self):
         tasks = list(range(WORK_LOAD))
@@ -68,16 +86,16 @@ class TestMultithreading(unittest.TestCase):
 
         # Result size test
         results = list(results)
-        assert len(results) == WORK_LOAD, "Incorrect number of results."
+        self.assertEqual(len(results), WORK_LOAD)
 
         # Content test.
         valid_worker_ids = set(range(0, THREAD_COUNT))
         results = sorted(results, key=lambda element: element["task"])
         for result, task in zip(results, tasks):
-            assert result["task"] == task, f'Mismatch in tasks {result['task']} does not match {task}.'
-            assert result['worker_id'] in valid_worker_ids, f"Worker ID {result['worker_id']} is invalid."
-            assert result['total_tasks'] == len(tasks), f'Expected {len(tasks)}, received {result['total_tasks']}'
-            assert result['constant'] == 'my_constant'
+            self.assertEqual(result["task"], task)
+            self.assertIn(result["worker_id"], valid_worker_ids)
+            self.assertEqual(result["total_tasks"], len(tasks))
+            self.assertEqual(result["constant"], "my_constant")
 
     def test_paralellize_uncountable_tasks_with_dict_results(self):
         tasks = range(WORK_LOAD)
@@ -88,16 +106,16 @@ class TestMultithreading(unittest.TestCase):
 
         # Result size test
         results = list(results)
-        assert len(results) == WORK_LOAD, "Incorrect number of results."
+        self.assertEqual(len(results), WORK_LOAD)
 
         # Content test.
         valid_worker_ids = set(range(0, THREAD_COUNT))
         results = sorted(results, key=lambda element: element["task"])
         for result, task in zip(results, tasks):
-            assert result["task"] == task, f'Mismatch in tasks {result['task']} does not match {task}.'
-            assert result['worker_id'] in valid_worker_ids, f"Worker ID {result['worker_id']} is invalid."
-            assert result['total_tasks'] == "unknown", f'Expected {len(tasks)}, received {result['total_tasks']}'
-            assert result['constant'] == 'my_constant'
+            self.assertEqual(result["task"], task)
+            self.assertIn(result["worker_id"], valid_worker_ids)
+            self.assertEqual(result["total_tasks"], "unknown")
+            self.assertEqual(result["constant"], "my_constant")
 
     def test_paralellize_tasks_with_object_results(self):
         tasks = range(WORK_LOAD)
@@ -108,7 +126,7 @@ class TestMultithreading(unittest.TestCase):
 
         # Result size test
         results = list(results)
-        assert len(results) == WORK_LOAD, "Incorrect number of results."
+        self.assertEqual(len(results), WORK_LOAD)
 
         # Content test.
         valid_worker_ids = set(range(0, THREAD_COUNT))
@@ -116,10 +134,11 @@ class TestMultithreading(unittest.TestCase):
         used_task_ids = set()
         results = sorted(results, key=lambda element: element.task)
         for result, task in zip(results, tasks):
-            assert isinstance(result, MyObject), "Received incorrect object type."
-            assert result.task == task, f'Mismatch in tasks {result['task']} does not match {task}.'
-            assert result.worker_id in valid_worker_ids, f"Worker ID {result['worker_id']} is invalid."
-            assert result.total_tasks == "unknown", f'Expected {len(tasks)}, received {result['total_tasks']}'
-            assert result.task_id in valid_task_ids, f'Task ID {result.task_id} is invalid.'
-            assert result.task_id not in used_task_ids, f"Task ID {result.task_id} is used twice."
+            self.assertIsInstance(result, MyObject)
+            self.assertEqual(result.task, task)
+            self.assertIn(result.worker_id, valid_worker_ids)
+            self.assertEqual(result.total_tasks, "unknown")
+            self.assertIn(result.task_id, valid_task_ids)
+            self.assertNotIn(result.task_id, used_task_ids)
+
             used_task_ids.add(result.task_id)
