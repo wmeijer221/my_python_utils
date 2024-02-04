@@ -79,7 +79,6 @@ class SafeDict(dict, Generic[_KT, _VT]):
 
     def __get_default_value(self) -> Any:
         """Returns the default value."""
-        print(self.__default_value_method)
         return self.__default_value_method(
             self.__default_value,
             *self.__default_value_constructor_args,
