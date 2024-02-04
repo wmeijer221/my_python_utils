@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import unittest
 import multiprocessing
 
-from wmeijer_utils.multithreading import parallelize_tasks_2
+from wmeijer_utils.multithreading import parallelize_tasks
 
 
 THREAD_COUNT = 8
@@ -36,11 +36,11 @@ def return_object(task, task_id, worker_id, total_tasks):
 
 
 class TestMultithreading(unittest.TestCase):
-    def _1test_paralellize_tasks_termination(self):
+    def test_paralellize_tasks_termination(self):
         tasks = range(WORK_LOAD)
 
         def bar():
-            results = parallelize_tasks_2(
+            results = parallelize_tasks(
                 tasks, return_object, thread_count=THREAD_COUNT, return_results=True
             )
 
@@ -53,18 +53,16 @@ class TestMultithreading(unittest.TestCase):
     def test_paralellize_tasks_no_results(self):
         tasks = range(WORK_LOAD)
 
-        results = parallelize_tasks_2(
+        results = parallelize_tasks(
             tasks, return_task, thread_count=THREAD_COUNT, return_results=False
         )
 
-        results = list(results)
-
-        self.assertEqual(len(results), 0, "Received results when I shouldn't have.")
+        self.assertIsNone(results)
 
     def test_paralellize_tasks_with_primitive_results(self):
         tasks = range(WORK_LOAD)
 
-        results = parallelize_tasks_2(
+        results = parallelize_tasks(
             tasks, return_task, thread_count=THREAD_COUNT, return_results=True
         )
 
@@ -75,12 +73,12 @@ class TestMultithreading(unittest.TestCase):
         tasks = set(tasks)
         results = set(results)
         intersect = tasks.intersection(results)
-        self.assertEqual(len(intersect, WORK_LOAD), "Received incorrect results.")
+        self.assertEqual(len(intersect), WORK_LOAD, "Received incorrect results.")
 
     def test_paralellize_countable_tasks_with_dict_results(self):
         tasks = list(range(WORK_LOAD))
 
-        results = parallelize_tasks_2(
+        results = parallelize_tasks(
             tasks, return_dict, thread_count=THREAD_COUNT, return_results=True
         )
 
@@ -100,7 +98,7 @@ class TestMultithreading(unittest.TestCase):
     def test_paralellize_uncountable_tasks_with_dict_results(self):
         tasks = range(WORK_LOAD)
 
-        results = parallelize_tasks_2(
+        results = parallelize_tasks(
             tasks, return_dict, thread_count=THREAD_COUNT, return_results=True
         )
 
@@ -120,7 +118,7 @@ class TestMultithreading(unittest.TestCase):
     def test_paralellize_tasks_with_object_results(self):
         tasks = range(WORK_LOAD)
 
-        results = parallelize_tasks_2(
+        results = parallelize_tasks(
             tasks, return_object, thread_count=THREAD_COUNT, return_results=True
         )
 
