@@ -1,3 +1,5 @@
+test_all: tests build local_install
+publish: build test_push push
 
 build:
 	rm -r -f ./dist/*
@@ -26,4 +28,4 @@ bump_patch:
 	bumpver update --patch
 	
 tests:
-	python -m unittest discover -v -s test -p "test_*"
+	python -m unittest discover -v -p "test_*.py"
