@@ -7,7 +7,7 @@ build:
 	twine check ./dist/*
 
 test_push:
-	twine upload -r testpypi ./dist/*
+	twine upload -r testpypi ./dist/* --verbose
 
 push:
 	twine upload ./dist/*
