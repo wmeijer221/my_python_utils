@@ -83,7 +83,6 @@ class TestSafeDict(unittest.TestCase):
         sd = SafeDict(my_callable)
 
         # Check instance
-        print(sd["key_1"])
         self.assertEqual(sd["key_1"], my_value, "Incorrect  default.")
 
         # Param test 1: args
