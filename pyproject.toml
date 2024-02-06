@@ -2,7 +2,7 @@
 
 [project]
 name = "wmeijer_utils"
-version = "0.8.0"
+version = "0.8.1"
 description = "Contains a diverse set of utility methods I use in Python."
 readme = 'README.md'
 license = { file = 'LICENSE' }
