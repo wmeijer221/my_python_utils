@@ -109,3 +109,9 @@ def merge_iterate_through_lists(
         for collection_index in collection.keys():
             element_pointers[collection_index] += 1
         yield lowest, collection
+
+
+def limit(iterator: Iterator[T], max_iterations: int) -> Iterator[T]:
+    while max_iterations > 0:
+        yield next(iterator)
+        max_iterations -= 1
