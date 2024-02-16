@@ -83,7 +83,9 @@ def better_get_nested_many(
     for key_index, key_element in enumerate(nested_key):
         if isinstance(current, List):
             all_inner = [
-                better_get_nested_many(element, nested_key[key_index:], raise_on_missing_key)
+                better_get_nested_many(
+                    element, nested_key[key_index:], raise_on_missing_key
+                )
                 for element in current
             ]
             combined = []
@@ -123,6 +125,22 @@ def subtract_dict(
     ):
         raise ValueError("Elements don't have the same keys.")
     return {key: collection_a[key] - collection_b[key] for key in key_intersect}
+
+
+def add_dict(
+    collection_a: Dict[K, Number], collection_b: Dict[K, Number]
+) -> Dict[K, Number]:
+    """
+    Subtracts the values of one dict from another: `set_a - set_b`.
+    :param collection_a: The dictionary subtracted from.
+    :param collection_b: The dictionary that's subtracted.
+    """
+    key_intersect = set(collection_a.keys()).intersection(collection_b.keys())
+    if len(key_intersect) != len(collection_a) or len(key_intersect) != len(
+        collection_b
+    ):
+        raise ValueError("Elements don't have the same keys.")
+    return {key: collection_a[key] + collection_b[key] for key in key_intersect}
 
 
 def invert_dict(collection: Dict[K, V]) -> Dict[V, K]:
