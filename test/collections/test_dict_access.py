@@ -1,6 +1,6 @@
 import unittest
 
-from wmeijer_utils.collections import dict_access as d
+from wmutils.collections import dict_access as d
 
 
 class TestDictAccess(unittest.TestCase):

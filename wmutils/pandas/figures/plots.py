@@ -4,7 +4,7 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from wmeijer_utils.pandas.figures.base import safe_save_fig
+from wmutils.pandas.figures.base import safe_save_fig
 
 
 def create_figure(

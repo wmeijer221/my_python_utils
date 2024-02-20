@@ -3,7 +3,7 @@ import typing
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from wmeijer_utils.pandas.figures.base import safe_save_fig
+from wmutils.pandas.figures.base import safe_save_fig
 
 
 DEFAULT_PLOT_STYLE: str = "ggplot"

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import unittest
 import multiprocessing
 
-from wmeijer_utils.multithreading import parallelize_tasks
+from wmutils.multithreading import parallelize_tasks
 
 
 THREAD_COUNT = 8

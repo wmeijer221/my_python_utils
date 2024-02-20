@@ -1,7 +1,7 @@
 # pyproject.toml
 
 [project]
-name = "wmeijer_utils"
+name = "wmutils"
 version = "0.10.0"
 description = "Contains a diverse set of utility methods I use in Python."
 readme = 'README.md'

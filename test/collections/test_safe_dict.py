@@ -1,6 +1,6 @@
 import unittest
 
-from wmeijer_utils.collections.safe_dict import SafeDict
+from wmutils.collections.safe_dict import SafeDict
 
 
 class TestSafeDict(unittest.TestCase):
