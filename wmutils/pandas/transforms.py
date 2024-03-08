@@ -23,3 +23,17 @@ def normalize_field_and_yield_min_max(
     min_x, max_x = min(df[field]), max(df[field])
     df.loc[:, field] = df[field].transform(lambda x: normalize(x, min_x, max_x))
     return df, min_x, max_x
+
+def min_max_scale(_df: pd.DataFrame, scaled_fields: pd.Series):
+    scaled_df = _df.copy()
+
+    for feature in scaled_fields:
+        feature_min = scaled_df[feature].min()
+        feature_max = scaled_df[feature].max()
+        feature_delta = feature_max - feature_min
+
+        scaled_df[feature] = (
+            scaled_df[feature].subtract(feature_min).divide(feature_delta)
+        )
+
+    return scaled_df
