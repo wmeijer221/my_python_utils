@@ -115,3 +115,25 @@ def limit(iterator: Iterator[T], max_iterations: int) -> Iterator[T]:
     while max_iterations > 0:
         yield next(iterator)
         max_iterations -= 1
+
+
+class RepeatingIterator:
+    """Iterator that provides the option to repeat an entry."""
+    def __init__(self, iterable):
+        self.iterable = iter(iterable)
+        self.last_item = None
+        self.repeat_last = False
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.repeat_last:
+            self.repeat_last = False
+            return self.last_item
+        else:
+            self.last_item = next(self.iterable)
+            return self.last_item
+
+    def set_repeat_last(self, value=True):
+        self.repeat_last = value
